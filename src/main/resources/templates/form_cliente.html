@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+
+<html lang="es" class="light-style layout-menu-fixed" dir="ltr"
+	data-theme="theme-default" data-assets-path="../static/"
+	data-template="vertical-menu-template-free"
+	xmlns:th="http://www.thymeleaf.org">
+		
+<head th:replace="layout/layout :: head">
+</head>
+
+<body>
+	<!-- Layout wrapper -->
+	<div class="layout-wrapper layout-content-navbar">
+		<div class="layout-container">
+			<!-- Menu -->
+
+			<aside th:replace="layout/layout :: menu">				
+			</aside>
+			
+			<!-- / Menu -->
+
+			<!-- Layout container -->
+			<div class="layout-page">
+				<!-- Navbar -->
+
+				<nav th:replace="layout/layout :: navCabecera">					
+				</nav>
+
+				<!-- / Navbar -->
+
+				<!-- Content wrapper -->
+				<div class="content-wrapper">
+					<!-- Content -->
+
+					<div class="container-xxl flex-grow-1 container-p-y">
+						<h4 class="fw-bold py-3 mb-4">
+							<a th:href="@{/clientes/listar}" class="text-muted fw-light" th:text="${raiz}+ ' >'"></a> <i th:text="${subRaiz}"></i>
+						</h4>
+
+						<div class="row">
+
+							<div class="col-xl-6">
+								<!-- HTML5 Inputs -->
+								<div class="card mb-4">
+									<h5 class="card-header" th:text="${accion}"></h5>
+
+									<div class="card-body">
+									
+										<!-- view errors all -->
+										<!--<div th:object="${paciente}" th:remove="tag">
+											<ul th:if="${#fields.hasErrors('*')}"
+												class="alert alert-danger" role="alert">
+												<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+											</ul>
+										</div>-->
+
+										<!-- FORM INICIO -->
+
+										<form id="formcliente" th:action="@{/clientes/form}" th:object="${cliente}"
+											method="post">
+											
+											<div class="col-md mb-3">
+												<div class="form-check form-check-inline mt-3">
+													<input class="form-check-input" type="radio"
+														name="tipoClienteRadioOptions" id="tipoClienteRadio1"
+														value="J"
+														th:field="*{tipoCliente}"
+														th:disabled="${subRaiz == 'Editar'}"/> <label
+														class="form-check-label" for="tipoRadio1">RUC</label>
+												</div>
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="radio"
+														name="tipoClienteRadioOptions" id="tipoClienteRadio2"
+														value="P" 
+														th:field="*{tipoCliente}"
+														th:disabled="${subRaiz == 'Editar'}"/> <label
+														class="form-check-label" for="tipoRadio2">DNI</label>
+												</div>
+												
+												<div id="divRuc" style="display: block" class="card mb-4">
+
+													<div class="card-body">
+														<div class="input-group">
+															<input id="ruc" class="form-control mb-2" type="number"
+																th:field="*{ruc}" placeholder="Digitar el RUC"
+																th:errorclass="'form-control alert-danger'" />
+															<button id="btnBuscarRuc" type="button"
+																class="btn btn-outline-primary mb-2">Buscar RUC</button>
+															<small class="form-text text-danger"
+																th:if="${#fields.hasErrors('ruc')}" th:errors="*{ruc}"></small>
+														</div>
+
+														<div class="mb-3">
+															<label for="razonCliente" class="form-label">Raz&oacute;n
+																Social</label> <input id="razonCliente" class="form-control"
+																type="text" th:field="*{razonSocial}"
+																placeholder="Razón Social"
+																th:errorclass="'form-control alert-danger'" /><small
+																class="form-text text-danger"
+																th:if="${#fields.hasErrors('razonSocial')}"
+																th:errors="*{razonSocial}"></small>
+														</div>
+
+														<div class="mb-1">
+															<label for="estadoSunat" class="form-label">Estado
+																SUNAT</label> <input id="estadoSunat" class="form-control"
+																type="text" th:field="*{estadoSunat}"
+																placeholder="Estado SUNAT"
+																th:errorclass="'form-control alert-danger'" /><small
+																class="form-text text-danger"
+																th:if="${#fields.hasErrors('estadoSunat')}"
+																th:errors="*{estadoSunat}"></small>
+														</div>
+
+													</div>
+
+												</div>
+
+												<div id="divDni" style="display: none" class="card mb-4">
+
+													<div class="card-body">
+														<div class="input-group">
+															<input id="dni" class="form-control mb-2" type="number"
+																th:field="*{dni}" placeholder="Digitar el DNI"
+																th:errorclass="'form-control alert-danger'" /> <small
+																class="form-text text-danger"
+																th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></small>
+														</div>
+
+														<div class="mb-1">
+															<label for="nombreCliente" class="form-label">Nombre del Cliente</label> <input id="nombreCliente" class="form-control"
+																type="text" th:field="*{razonSocial}"
+																placeholder="Razón Social"
+																th:errorclass="'form-control alert-danger'" /><small
+																class="form-text text-danger"
+																th:if="${#fields.hasErrors('razonSocial')}"
+																th:errors="*{razonSocial}"></small>
+														</div>
+
+													</div>
+
+
+												</div>
+
+											</div>
+
+											<!--<div class="mb-3 row">-->
+											<div class="mb-3">
+												
+												
+											</div>
+
+											
+											
+											<div class="mb-3">
+												<label for="direccion" class="form-label">Direcci&oacute;n</label>
+												<input id="direccion" class="form-control" type="text"
+													th:field="*{direccion}"
+													placeholder="Dirección Completa"
+													th:errorclass="'form-control alert-danger'" /><small
+													class="form-text text-danger"
+													th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></small>
+											</div>
+											
+											<div class="mb-3">
+												<label for="contacto" class="form-label">CONTACTO</label>
+												<input id="contacto" class="form-control" type="text"
+													th:field="*{contacto}"
+													placeholder="Nombre de Contacto"
+													th:errorclass="'form-control alert-danger'" /><small
+													class="form-text text-danger"
+													th:if="${#fields.hasErrors('contacto')}" th:errors="*{contacto}"></small>
+											</div>
+											
+
+											<div class="mb-3">
+												<label for="correo" class="form-label">CORREO
+													ELECTRÓNICO</label> <!-- <input type="email" class="form-control"  -->
+													<input type="text" class="form-control"
+													id="correo"
+													th:field="*{email}"
+													placeholder="nombre@dominio.com"
+													th:errorclass="'form-control alert-danger'" /><small
+													class="form-text text-danger"
+													th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+											</div>
+
+											
+
+											<div class="form-group row">
+												<div class="col-sm-6">
+													<input type="submit" th:value="${accion}"
+														class="btn btn-primary" />
+												</div>
+											</div>
+
+										</form>
+
+										<!-- FORM FIN -->
+
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<!-- / Content -->
+
+					<div class="content-backdrop fade"></div>
+				</div>
+				<!-- Content wrapper -->
+			</div>
+			<!-- / Layout page -->
+		</div>
+
+		<!-- Overlay -->
+		<div class="layout-overlay layout-menu-toggle"></div>
+	</div>
+	<!-- / Layout wrapper -->
+
+
+	<!-- Footer -->
+            <footer th:replace="layout/layout :: footer">
+            </footer>
+    <!-- / Footer -->
+    
+    <input type="hidden" id="urlAjax" th:value="@{/api/}"/>
+    
+    <script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('input[type=text]').forEach( node => node.addEventListener('keypress', e => {
+          if(e.keyCode == 13) {
+            e.preventDefault();
+          }
+        }));
+        document.querySelectorAll('input[type=number]').forEach( node => node.addEventListener('keypress', e => {
+            if(e.keyCode == 13) {
+              e.preventDefault();
+            }
+          }));
+        
+      });
+
+	    $(document).ready(function() {
+
+	    	let idCliente = "[[${cliente.id}]]";
+	    	let tipoCliente = '[[${cliente.tipoCliente}]]';
+
+	    	if(idCliente > 0){
+
+	    		if(tipoCliente === "J"){
+		    		
+			    	$('#dni').val('');
+					$("#dni").prop('disabled', true);					
+					$('#nombreCliente').val('');
+					$("#nombreCliente").prop('disabled', true);
+
+					
+			
+				    } else {
+				    	$('#ruc').val('');
+						$("#ruc").prop('disabled', true);
+
+						$('#dni').val('');
+						$("#dni").prop('disabled', false);
+
+					    }
+
+
+		    	} else {
+						console.log("Cliente Nuevo...");
+						
+						if(tipoCliente === "J"){
+					    	$('#dni').val('');
+							$("#dni").prop('disabled', true);
+							
+							$('#nombreCliente').val('');
+							$("#nombreCliente").prop('disabled', true);
+
+							$('#razonCliente').val('');
+							$("#razonCliente").prop('disabled', false);
+
+							$('#ruc').val('');
+							$("#ruc").prop('disabled', false);	
+
+							$('#estadoSunat').val('');
+							$("#estadoSunat").prop('disabled', false);
+					
+						    } else {
+						    	$('#ruc').val('');
+								$("#ruc").prop('disabled', true);
+								$('#razonCliente').val('');
+								$("#razonCliente").prop('disabled', true);
+								$('#estadoSunat').val('');
+								$("#estadoSunat").prop('disabled', true);
+								
+
+								$('#dni').val('');
+								$("#dni").prop('disabled', false);
+								$('#nombreCliente').val('');
+								$("#nombreCliente").prop('disabled', false);
+
+							    }
+						
+			    	}//fin if
+
+			    	$("#tipoClienteRadio1").on('change', self.tipoClienteRadio1, function (e) {
+
+			            //e.preventDefault();	           
+			            	
+			            	let divRuc = $('#divRuc').css('display');
+			            	console.log("Valor de divTrata -> " + divRuc);
+
+			            	if($("#tipoClienteRadio1").prop('checked')){
+				            	
+			            		$('#divRuc').css('display','block');
+			            		
+			            		$('#ruc').val('');
+								$("#ruc").prop('disabled', false);	
+			            		$('#razonCliente').val('');
+								$("#razonCliente").prop('disabled', false);								
+								$('#estadoSunat').val('');
+								$("#estadoSunat").prop('disabled', false);			            		
+			            		
+			            		//$("#cargarItemServicios tbody").remove();
+			            		
+			            		$('#divDni').css('display','none');
+								$('#dni').val('');
+								$("#dni").prop('disabled', true);							
+								$('#nombreCliente').val('');
+								$("#nombreCliente").prop('disabled', true);								
+			            		
+			            		
+			            		
+			            	}else{
+			            		
+			            		
+				            	}       
+
+			       });
+
+			    	$("#tipoClienteRadio2").on('change', self.tipoClienteRadio2, function (e) {
+
+			            //e.preventDefault();	           
+			            	
+			            	let divRuc = $('#divRuc').css('display');
+			            	console.log("Valor de divTrata -> " + divRuc);
+
+			            	if($("#tipoClienteRadio2").prop('checked')){
+			            		$('#divDni').css('display','block');
+			            		
+			            		//$("#cargarItemServicios tbody").remove();
+								$('#dni').val('');
+								$("#dni").prop('disabled', false);							
+								$('#nombreCliente').val('');
+								$("#nombreCliente").prop('disabled', false);								
+			            		
+			            		$('#divRuc').css('display','none');
+								$('#ruc').val('');
+								$("#ruc").prop('disabled', true);	
+			            		$('#razonCliente').val('');
+								$("#razonCliente").prop('disabled', true);								
+								$('#estadoSunat').val('');
+								$("#estadoSunat").prop('disabled', true);
+			            		
+			            		
+			            	}else{
+			            		
+			            		
+				            	}       
+
+			       });
+
+		    
+		    
+
+
+
+		    //EVENTOS
+		    $("#ruc").on('keyup', self.ruc, function (e) {
+		    	//console.log("keyup en pago_efectivo...");
+	            e.preventDefault();	 
+
+	            cleanDataContribuyente();
+	            
+	            if(e.keyCode == 13) {
+	                console.log("dentro de keyup ....");
+	                let ruc = $('#ruc').val();	
+	                getApiRuc(ruc);
+	              }     
+	            
+	       });
+
+		    $("#dni").on('keyup', self.dni, function (e) {
+		    	//console.log("keyup en pago_efectivo...");
+	            e.preventDefault();	 
+
+	            cleanDataDNI(); 
+	            
+	       });
+
+
+		    $("#btnBuscarRuc").click(function(){
+			    //console.log("antes de mostrar la ventana modal -> modalScrollableCitas ");
+			    let ruc = $('#ruc').val();	
+                getApiRuc(ruc);
+	        });  
+
+	    	
+		    $("#formcliente").on('submit', self.formcliente, function (e) {
+	            e.preventDefault();	   
+	            validarFormulario(e, this);	
+	        }); 
+	    	
+
+	        
+	    });//fin ready
+
+	    //FUNCIONES GLOBALES
+	    
+	    async function validarFormulario(evento, form) {
+		  evento.preventDefault();
+
+		  	let valRuc = parseInt($('#ruc').val() === '' ? 0 : $('#ruc').val());
+			let valRazonSocial = $('#razonCliente').val();
+			let valEstadoSunat = $('#estadoSunat').val();
+			let valDireccion = $('#direccion').val();
+			let valDni = $('#dni').val();
+			let valNombreCliente = $('#nombreCliente').val();
+			
+			
+
+			if($("#tipoClienteRadio1").prop('checked')){
+				
+				if(valRuc === 0){
+					alert('Debe digitar un ruc valido');
+				    return;
+					}//fin if
+				if(valRazonSocial === ''){
+					alert('Digite una Razon Social valida');
+				    return;
+					}
+				if(valEstadoSunat === ''){
+					alert('Estado Sunat Incompleto');
+				    return;
+					}
+				
+			}
+			if($("#tipoClienteRadio2").prop('checked')){ 
+				if(valDni === ''){
+					alert('Numero de DNI invalido');
+				    return;
+					}
+				if(valNombreCliente === ''){
+					alert('Nombre de Cliente Incompleto');
+				    return;
+					}				
+				}//fin else if
+			
+			
+
+
+		  //ultima val, si existe el ruc en la BD
+		  let urlAjax = $("#urlAjax").val();
+		  let ruc = $('#ruc').val();	
+		  const api_url = urlAjax + "clientes/existe?term="+ruc.trim();
+		  const response = await fetch(api_url);
+		  var data = await response.json();
+		  if (response) {
+		    	console.log(" typeof de data.existe ->"  + typeof data.existe);
+				//validar si es edicion no debe contemplar al ruc en consulta
+				let tipoCliente = '[[${cliente.tipoCliente}]]';
+				let accion = "[[${subRaiz}]]" // Editar o Nuevo
+				let rucCliente = "[[${cliente.ruc}]]";
+				let dniCliente = "[[${cliente.dni}]]";		    	
+		    	
+		    	if(!data.existe){
+		    			console.log("Rpta OK");
+		    		 	form.submit();
+		    		 
+			    	} else {
+				    	if(accion === 'Editar' && (rucCliente ===  $('#ruc').val().trim())){
+				    		console.log("Segundo filtro validacion ruc cliente");
+			    		 	form.submit();
+					    	
+					    	}else{
+					    		console.log("El RUC ya existe en la Base de Datos");
+					    		alert('El RUC ya existe en la Base de Datos');
+					    		
+					    		return;
+						    	}
+			    		
+			    	}
+              
+		    }
+		  		  
+	    }
+	    
+	    async function getApiRuc(ruc) {
+		    
+	    	cleanDataContribuyente();
+	    	// api url
+            const api_url = "http://optimizaciondesoluciones.ddns.net:8080/aspasrucapi/api/ruc/buscar?term=" + ruc.trim(); 
+
+		    // Storing response
+		    const response = await fetch(api_url);
+		    
+		    // Storing data in form of JSON
+		    var data = await response.json();
+		    
+		    
+		    if (response) {
+		    	console.log(data);
+		    	if(data.respuesta === 'OK'){
+		    		//console.log("Rpta OK");
+		    		setDataContribuyente(data);
+			    	}
+		    	if(data.respuesta === 'NE'){
+		    		console.log("EL RUC del Contribuyente no Existe");
+		    		alert('El RUC del Contribuyente no Existe');
+			    	}
+                
+		    }
+		    
+		    
+		}
+
+		function cleanDataDNI(){
+			 $('#nombreCliente').val("");
+	    	 $('#direccion').val("");
+	    	 $('#contacto').val("");
+	    	 $('#correo').val("");
+	    	 
+			}
+
+		function cleanDataContribuyente(){
+			 $('#razonCliente').val("");
+	    	 $('#estadoSunat').val("");
+	    	 $('#direccion').val("");
+	    	 $('#contacto').val("");
+	    	 $('#correo').val("");
+	    	 
+			}
+
+	    function setDataContribuyente(data) {
+			let RAZON_SOCIAL = data.contribuyente.razonSocial.trim();
+			let ESTADO_CONTRIBUYENTE = data.contribuyente.estadoContribuyente.trim();
+			let TIPO_VIA = data.contribuyente.tipoVia.trim();
+			let NOMBRE_VIA = data.contribuyente.nombreVia.trim();
+			let CODIGO_ZONA = data.contribuyente.codigoZona.trim();
+			let TIPO_ZONA = data.contribuyente.tipoZona.trim();
+			let NUMERO = data.contribuyente.numero.trim();
+			let INTERIOR = data.contribuyente.interior.trim();
+			let LOTE = data.contribuyente.lote.trim();
+			let DEPARTAMENTO = data.contribuyente.departamento.trim();
+			let MANZANA = data.contribuyente.manzana.trim();
+			let KILOMETRO = data.contribuyente.kilometro.trim();
+			let UBICACION = data.contribuyente.ubicacion.trim();
+
+			let DIRECCION = "";
+
+			TIPO_VIA = (TIPO_VIA === '-' || TIPO_VIA === '---') ? '' : TIPO_VIA ;
+			NOMBRE_VIA = (NOMBRE_VIA === '-' || NOMBRE_VIA === '---') ? '' : NOMBRE_VIA ;
+			CODIGO_ZONA = (CODIGO_ZONA === '-' || CODIGO_ZONA === '---') ? '' : CODIGO_ZONA ;
+			TIPO_ZONA = (TIPO_ZONA === '-' || TIPO_ZONA === '---') ? '' : TIPO_ZONA ;
+			NUMERO = (NUMERO === '-' || NUMERO === '---') ? '' : NUMERO ;
+			INTERIOR = (INTERIOR === '-' || INTERIOR === '---') ? '' : INTERIOR ;
+			LOTE = (LOTE === '-' || LOTE === '---') ? '' : LOTE ;
+			DEPARTAMENTO = (DEPARTAMENTO === '-' || DEPARTAMENTO === '---') ? '' : DEPARTAMENTO ;
+			MANZANA = (MANZANA === '-' || MANZANA === '---') ? '' : MANZANA ;
+			KILOMETRO = (KILOMETRO === '-' || KILOMETRO === '---') ? '' : KILOMETRO ;
+			UBICACION = (UBICACION === '-' || UBICACION === '---') ? '' : UBICACION ;
+
+			(TIPO_VIA !== '') ? (DIRECCION = DIRECCION  + TIPO_VIA) : (DIRECCION = DIRECCION);
+			(NOMBRE_VIA !== '') ? (DIRECCION = DIRECCION  + " " + NOMBRE_VIA) : (DIRECCION = DIRECCION);
+			(NUMERO !== '') ? (DIRECCION = DIRECCION  + " NRO. " + NUMERO) : (DIRECCION = DIRECCION);
+			(INTERIOR !== '') ? (DIRECCION = DIRECCION  + " INT. " + INTERIOR) : (DIRECCION = DIRECCION);
+			(CODIGO_ZONA !== '') ? (DIRECCION = DIRECCION  + " " + CODIGO_ZONA) : (DIRECCION = DIRECCION);
+			(TIPO_ZONA !== '') ? (DIRECCION = DIRECCION  + " " + TIPO_ZONA) : (DIRECCION = DIRECCION);
+			(MANZANA !== '') ? (DIRECCION = DIRECCION  + " MZ. " + MANZANA) : (DIRECCION = DIRECCION);
+			(LOTE !== '') ? (DIRECCION = DIRECCION  + " LT. " + LOTE) : (DIRECCION = DIRECCION);
+			(DEPARTAMENTO !== '') ? (DIRECCION = DIRECCION  + " DPTO. " + DEPARTAMENTO) : (DIRECCION = DIRECCION);
+
+			DIRECCION = DIRECCION + ", " + UBICACION;
+
+			if(data.contribuyente.ruc.toString().trim().substring(0,1) === '1'){
+				DIRECCION = '-';
+				}
+		    
+	    	 $('#razonCliente').val(RAZON_SOCIAL);
+	    	 $('#estadoSunat').val(ESTADO_CONTRIBUYENTE);
+	    	 $('#direccion').val(DIRECCION);
+
+		    }
+
+    </script>
+    
+   
+    
+</body>
+</html>
